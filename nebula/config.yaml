@@ -1,0 +1,18 @@
+# Configuration file example
+targetURL: http://go-test-service.naap-development.svc.cluster.local:8080
+rateLimits:
+  spikeArrest: 1000
+  distributed: false
+  host: naap-development.pod.cluster.local:6379
+  password: password
+  limiters:
+    userid:
+      type: path
+      tps: 50
+    limit:
+      type: header
+      tps: 20
+IPWhitelist:
+  '0.0.0.0': true
+countryCodeEx: true
+loggingLevel: info

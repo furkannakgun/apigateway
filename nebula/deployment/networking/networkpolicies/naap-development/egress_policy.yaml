@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: nebula-egress
+  labels:
+    contact.productowner: victor.fernandez_at_vodafone.com
+    contact.deployment: naapdevops_at_vodafone.com
+    contact.team: naapdev_at_vodafone.com
+    environment.type: DEV
+    environment.up: '09'
+    environment.down: '15'
+    microservice.localmarket: GROUP
+  annotations:
+    contact.support: '+447748106038'
+    microservice.name: nebula
+    microservice.repository: https://github.vodafone.com/VFGroup-NetworkArchitecture-NAAP/nebula.git
+    microservice.documentation: https://confluence.sp.vodafone.com/display/NAAP/API+Gateway
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app: nebula
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: go-test-service
+    ports:
+      - port: 8080
+        protocol: TCP
+  - to:
+    - podSelector:
+        matchLabels:
+          app: etcd
+    ports:
+      - port: 2379
+        protocol: TCP

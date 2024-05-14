@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nebula
+  labels:
+    contact.productowner: victor.fernandez_at_vodafone.com
+    contact.deployment: naapdevops_at_vodafone.com
+    contact.team: naapdev_at_vodafone.com
+    environment.type: DEV
+    environment.up: '09'
+    environment.down: '15'
+    microservice.localmarket: GROUP
+  annotations:
+    contact.support: '+447748106038'
+    microservice.name: nebula
+    microservice.repository: https://github.vodafone.com/VFGroup-NetworkArchitecture-NAAP/nebula.git
+    microservice.documentation: https://confluence.sp.vodafone.com/display/NAAP/nebula
+    downscaler/uptime: "Mon-Fri 07:00-20:00 CET"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nebula
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: nebula
+    spec:
+      containers:
+      - image: 507653421664.dkr.ecr.eu-central-1.amazonaws.com/naap-internal-dev:dev.2-nebula-fdd4d09
+        name: nebula
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CONFIG_DB_URL
+            value: http://etcd0.naap-internal-dev.svc.cluster.local:2379
+          - name: CONFIG_DB_KEY
+            value: go-test-service
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "1"
+            memory: 500Mi
+          limits:
+            cpu: "1"
+            memory: 500Mi
+        volumeMounts:
+          - mountPath: /nebula-data
+            name: nebula-data
+        livenessProbe:
+          initialDelaySeconds: 20
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 8080
+        readinessProbe:
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 8080
+      volumes:
+        - name: nebula-data
+          emptyDir: {}
+          

@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Dynamic Bandwidth API
+  description: The Dynamic Bandwidth API aims to expose the network capability to change the speed cap of a mobile subscriber on-demand and for a given period of time
+  version: 0.1.10
+# servers:
+#   - url: https://dev-naap.api.vodafone.com
+#   - url: https://stg-naap.api.vodafone.com
+#   - url: https://network-apis.vodafone.com
+#   - url: http://localhost/
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: developers
+    description: Operations available to regular developers
+#security:
+#  - oAuthSample: [clientCredentials]
+paths:
+  /go-test-service/test/{userid}:
+    get:
+      tags:
+        - admins
+      parameters:
+        - in: path
+          name: userid
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Search results matching criteria
+  /go-test-service/test/{userid}/{limit}:
+    get:
+      tags:
+        - admins
+      parameters:
+        - in: path
+          name: userid
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: limit
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: test path specifying request limits in {limit}
+  /go-test-service/test/dynamicbandwidth/{subscriberMSISDN}:
+    get:
+      tags:
+        - admins
+      parameters:
+        - in: path
+          name: subscriberMSISDN
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Search results matching criteria
+
+  /health:
+    get:
+      tags:
+        - admins
+      responses:
+        "200":
+          description: Search results matching criteria

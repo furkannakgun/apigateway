@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nebula
+  labels:
+    app: nebula
+spec:
+  clusterIP: 172.31.2.202
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: nebula
+  type: ClusterIP

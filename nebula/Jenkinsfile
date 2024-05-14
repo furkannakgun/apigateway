@@ -1,0 +1,10 @@
+@Library('Naap_SharedLibrary')_
+
+def PROJECT_NAME_NEBULA = "nebula"
+def DOCKER_IMAGE_NAME_NEBULA = "nebula-${env.BUILD_ID}"
+
+ci_pipeline_nebula(
+  PROJECT_NAME_NEBULA : PROJECT_NAME_NEBULA,
+  IMAGE_NAME_NEBULA : DOCKER_IMAGE_NAME_NEBULA
+)
+
